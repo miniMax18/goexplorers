@@ -1,7 +1,7 @@
 package urlshort
 
 import (
-//	"encoding/json"
+	"encoding/json"
 	"log/slog"
 	"net/http"
 
@@ -72,36 +72,18 @@ func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
 	return MapHandler(emptyMap, fallback), nil
 }
 
-///func JSONHandler(jsonInput []byte, fallback http.Handler) (http.HandlerFunc, error) {
-///	urlMap := map[string]string{}
-///	var urlMapper UrlMapper
-///
-///	err := json.Unmarshal(jsonInput, &urlMapper)
-///	if err != nil {
-///		slog.Error("error: " + err.Error())
-///		return nil, err
-///	}
-///
-///	for _, mapper := range urlMapper {
-///		urlMap[mapper.Path] = mapper.Url
-///	}
-///	return MapHandler(urlMap, fallback), nil
-///}
+func JSONHandler(jsonInput []byte, fallback http.Handler) (http.HandlerFunc, error) {
+	urlMap := map[string]string{}
+	var urlMapper UrlMapper
 
-// TODO fix the code for xml
-///func XMLHandler(xml []byte, fallback http.Handler) (http.HandlerFunc, error) {
-///	emptyMap := map[string]string{}
-///	var urlMapper UrlMapper
-///
-///	err := xml.Unmarshal(xml, &urlMapper)
-///	if err != nil {
-///		slog.Error("error: " + err.Error())
-///		return nil, err
-///	}
-///
-///	for _, mapper := range urlMapper {
-///		emptyMap[mapper.Path] = mapper.Url
-///	}
-///
-///	return MapHandler(emptyMap, fallback), nil
-///}
+	err := json.Unmarshal(jsonInput, &urlMapper)
+	if err != nil {
+		slog.Error("error: " + err.Error())
+		return nil, err
+	}
+
+	for _, mapper := range urlMapper {
+		urlMap[mapper.Path] = mapper.Url
+	}
+	return MapHandler(urlMap, fallback), nil
+}

@@ -10,7 +10,7 @@ import (
 
 //not "urlshort/urls.yaml" cause [urlshort : "goexplorers/urlshort/main"]-> probably to urls automatically attached urlshort/ path 
 const urlMapYaml = "urls.yaml"
-//const urlMapJson = "urls.json"
+const urlMapJson = "urls.json"
 
 var logger = slog.New(slog.NewTextHandler(os.Stdout, nil))
 
@@ -30,26 +30,26 @@ func main() {
 		panic(err)
 	}
 
-	//jsonFile, err := os.ReadFile(urlMapJson)
-	//if err != nil {
-	//	panic(err)
-	//}
+	jsonFile, err := os.ReadFile(urlMapJson)
+	if err != nil {
+		panic(err)
+	}
 
 	yaml := string(yamlFile)
-	//json := string(jsonFile)
+	json := string(jsonFile)
 
 	yamlHandler, err := urlshort.YAMLHandler([]byte(yaml), mapHandler)
 	if err != nil {
 		panic(err)
 	}
 
-	//jsonHandler, err := urlshort.JSONHandler([]byte(json), mapHandler)
-	//if err != nil {
-	//	panic(err)
-	//}
+	jsonHandler, err := urlshort.JSONHandler([]byte(json), yamlHandler)
+	if err != nil {
+		panic(err)
+	}
 
 	logger.Info("Starting the server on :8080")
-	http.ListenAndServe(":8080", yamlHandler)
+	http.ListenAndServe(":8080", jsonHandler)
 }
 
 func defaultMux() *http.ServeMux {
