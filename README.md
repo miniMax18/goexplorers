@@ -68,5 +68,3 @@ find . -maxdepth 1 -type d -not -path '.' -not -path '*/.*' | sed 's|$|/...|' | 
 ```
 
 Note that the command above depends on the existence of `go.work` file.
-
-![](https://traust.duckdns.org/api/public/dl/Q9Haw2rT?inline=true)
